@@ -8,22 +8,22 @@
 tools:
   # ---------------- Core tools ----------------
   - name: clarify
-    description: "Gửi một câu hỏi cho người dùng."
+    description: "Hỏi người dùng khi thiếu thông tin bắt buộc hoặc cần xác nhận hành động. Luôn truyền response_type rõ ràng: text khi cần asset ID/employee ID hoặc dữ liệu tự do; yes_no khi xác nhận đúng một payload; choice khi phải chọn trong options. Không gọi tool đích trong cùng lượt khi đang hỏi bổ sung."
     parameters:
       type: object
       properties:
-        question: {type: string, default: "", description: "Câu hỏi"}
-        response_type: {type: string, enum: [text, yes_no, choice], default: "text", description: "Kiểu trả lời"}
-        options: {type: array, default: [], items: {type: string}, description: "Các lựa chọn"}
-      required: [question]
+        question: {type: string, minLength: 1, description: "Một câu hỏi cụ thể nêu đúng thông tin còn thiếu hoặc payload cần xác nhận."}
+        response_type: {type: string, enum: [text, yes_no, choice], description: "Bắt buộc truyền rõ kiểu trả lời: text, yes_no hoặc choice."}
+        options: {type: array, default: [], items: {type: string}, description: "Các lựa chọn hợp lệ khi response_type là choice; ví dụ [production, staging]."}
+      required: [question, response_type]
 
   - name: search_kb
-    description: "Tìm hướng dẫn hỗ trợ kỹ thuật."
+    description: "Tìm hướng dẫn xử lý trong knowledge base nội bộ. Chọn category theo chủ đề: Outlook, email, webmail và mail profile dùng email; tài khoản bị khóa, password, MFA và SSO account dùng account; Wi-Fi dùng wifi; máy in dùng printing; VPN dùng vpn; bảo mật dùng security; phần cứng dùng hardware; phần mềm/driver dùng software; phòng họp dùng meeting_room."
     parameters:
       type: object
       properties:
         query: {type: string, default: "", description: "Nội dung cần tìm"}
-        category: {type: string, enum: [all, vpn, email, wifi, printing, account, security, hardware, software, meeting_room], default: "all", description: "Nhóm hướng dẫn"}
+        category: {type: string, enum: [all, vpn, email, wifi, printing, account, security, hardware, software, meeting_room], default: "all", description: "Nhóm hướng dẫn. Outlook và mail profile thuộc email, không thuộc account."}
         top_k: {type: integer, default: 3, description: "Số kết quả"}
       required: [query]
 
@@ -37,20 +37,20 @@ tools:
       required: [service]
 
   - name: inspect_device
-    description: "Kiểm tra thông tin và chẩn đoán thiết bị."
+    description: "Kiểm tra đúng một thiết bị khi người dùng đã cung cấp asset ID rõ ràng. Asset ID chỉ bắt đầu bằng LT, DT, MB, PR hoặc RM rồi đến dấu gạch ngang và chữ số. Không dùng employee ID EMP-* làm asset ID và không tự gọi tool này chỉ vì lookup_user trả về danh sách thiết bị; chỉ inspect khi yêu cầu hiện tại nói rõ cần kiểm tra thiết bị."
     parameters:
       type: object
       properties:
-        asset_id: {type: string, description: "Mã tài sản"}
-        check: {type: string, enum: [all, network, vpn, security, hardware, software], default: "all", description: "Nhóm kiểm tra"}
-      required: [asset_id]
+        asset_id: {type: string, pattern: "^(LT|DT|MB|PR|RM)-[0-9]+$", description: "Mã tài sản rõ ràng như LT-204 hoặc DT-031; không phải employee ID EMP-*."}
+        check: {type: string, enum: [all, network, vpn, security, hardware, software], description: "Phạm vi được yêu cầu. Dùng all chỉ khi người dùng yêu cầu kiểm tra tổng thể; nếu nêu VPN, Wi-Fi/network, security, hardware hoặc software thì dùng đúng giá trị tương ứng."}
+      required: [asset_id, check]
 
   - name: lookup_user
-    description: "Tra cứu người dùng trong danh bạ hỗ trợ."
+    description: "Tra cứu trạng thái tài khoản và danh sách asset được cấp cho đúng một employee ID. Đây chỉ là tra cứu người dùng; không gọi thêm inspect_device khi người dùng chỉ hỏi tài khoản và thiết bị được cấp."
     parameters:
       type: object
       properties:
-        employee_id: {type: string, description: "Mã nhân viên"}
+        employee_id: {type: string, pattern: "^EMP-[0-9]+$", description: "Mã nhân viên rõ ràng dạng EMP-1003; không dùng tên người hoặc phòng ban."}
       required: [employee_id]
 
   - name: format_incident_report
