@@ -31,8 +31,8 @@ Phần dưới đây phải do chính Nguyễn Tiến Lượng tự viết và c
 
 ### Nguyễn Tiến Lượng — 26A202602378
 
-- Phần việc và file/commit/PR: **[TỰ VIẾT — có thể đối chiếu các file và commit trong bảng Thành viên]**
-- Quyết định, khó khăn và cách xử lý: **[TỰ VIẾT]**
-- Điều đã học: **[TỰ VIẾT]**
-- AI/công cụ đã dùng và cách kiểm tra: **[TỰ VIẾT — cần nêu Codex và cách kiểm tra run/diff]**
-- Thời điểm đã tự nộp URL repo chung trên VLearn: **[TỰ ĐIỀN SAU KHI NỘP]**
+- Phần việc và file/commit/PR: ALL FILE
+- Quyết định, khó khăn và cách xử lý: Nothing
+- Điều đã học: Nothing
+- AI/công cụ đã dùng và cách kiểm tra: Codex
+- Thời điểm đã tự nộp URL repo chung trên VLearn: 11:40 
