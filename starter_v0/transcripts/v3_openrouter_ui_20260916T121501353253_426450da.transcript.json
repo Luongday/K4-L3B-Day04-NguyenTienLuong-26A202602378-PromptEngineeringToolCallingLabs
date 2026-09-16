@@ -1,0 +1,17 @@
+{
+  "transcript_id": "v3_openrouter_ui_20260916T121501353253_426450da",
+  "version": "v3",
+  "artifact_version": "v3+pdcbfb68ae71b+t56539f41a6a7",
+  "prompt_hash": "dcbfb68ae71b2e239dcb8607de7f32ca682abea16e175a65f821469f2ed11bb0",
+  "tools_hash": "56539f41a6a72bf77896f8558d08224c19dad591a87f0b3a82596337313769b4",
+  "provider": "openrouter",
+  "model": "openai/gpt-4o-mini",
+  "system_prompt": "C:\\Users\\Admin\\PycharmProjects\\K4-L3B-Day04-NguyenTienLuong-26A202602378-PromptEngineeringToolCallingLabs\\starter_v0\\artifacts\\system_prompt.md",
+  "tools": "C:\\Users\\Admin\\PycharmProjects\\K4-L3B-Day04-NguyenTienLuong-26A202602378-PromptEngineeringToolCallingLabs\\starter_v0\\artifacts\\tools.yaml",
+  "interface": "local_web_ui",
+  "history_window": 5,
+  "max_tool_rounds": 4,
+  "created_at": "2026-09-16T12:15:01",
+  "updated_at": "2026-09-16T12:15:01",
+  "turns": []
+}

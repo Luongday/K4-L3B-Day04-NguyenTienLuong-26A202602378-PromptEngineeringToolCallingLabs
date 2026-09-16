@@ -77,6 +77,22 @@ python run_eval.py --provider openrouter --version v0 --suite base --eval-cases 
 
 Thay `openrouter` bằng `openai`, `anthropic` hoặc `gemini` khi dùng provider khác. Không commit `.env`.
 
+## Chạy web UI của nhóm
+
+Web UI local dùng Python standard library nên không cần cài thêm framework ngoài `requirements.txt`. Từ thư mục `starter_v0`, chạy:
+
+```powershell
+python ui.py --provider openrouter --version v3
+```
+
+Sau đó mở <http://127.0.0.1:8000>. Có thể yêu cầu chương trình tự mở trình duyệt:
+
+```powershell
+python ui.py --provider openrouter --version v3 --open-browser
+```
+
+UI hiển thị artifact version, provider/model, hội thoại, từng tool name, input arguments, kết quả hoặc lỗi và đường dẫn transcript. Mỗi lần bấm **Tạo phiên mới**, transcript JSON mới được lưu vào `starter_v0/transcripts/`. Chỉ dùng dữ liệu lab giả lập; kiểm tra transcript trước khi commit.
+
 ## Tài liệu cần đọc
 
 | File | Dùng khi |

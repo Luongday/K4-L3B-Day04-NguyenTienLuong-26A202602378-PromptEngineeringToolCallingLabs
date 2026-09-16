@@ -1,7 +1,190 @@
 {
   "dataset_id": "day04_v3_helpdesk_group",
   "dataset_role": "group",
-  "description": "Template intentionally left empty. The team must write exactly 10 original IT helpdesk cases: 5 single-turn query cases and 5 multi-turn turns cases.",
+  "description": "Ten original team-authored IT helpdesk cases: five single-turn and five multi-turn cases covering routing, arguments, clarification, corrections, confirmation, and no-refetch formatting.",
   "allowed_failure_types": ["wrong_tool", "wrong_arg_value", "wrong_boundary", "unnecessary_tool", "out_of_scope", "missing_info"],
-  "cases": []
+  "cases": [
+    {
+      "id": "G01_room_hardware_check",
+      "phase": "B",
+      "query": "Kiểm tra riêng phần cứng của thiết bị phòng họp RM-501, không cần xem các nhóm chẩn đoán khác.",
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {"name": "inspect_device", "args": {"asset_id": "RM-501", "check": "hardware"}}
+        ]
+      },
+      "metadata": {
+        "turn_type": "single",
+        "difficulty": "easy",
+        "what_it_tests": "Chọn đúng asset phòng họp và giới hạn check=hardware."
+      }
+    },
+    {
+      "id": "G02_user_without_assets",
+      "phase": "B",
+      "query": "Tra cứu EMP-1004 để xem trạng thái tài khoản và danh sách thiết bị được cấp; chỉ cần thông tin người dùng.",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {"name": "lookup_user", "args": {"employee_id": "EMP-1004"}}
+        ]
+      },
+      "metadata": {
+        "turn_type": "single",
+        "difficulty": "easy",
+        "what_it_tests": "Không gọi inspect_device khi người dùng chỉ yêu cầu metadata và assigned assets."
+      }
+    },
+    {
+      "id": "G03_printer_network_and_service",
+      "phase": "B",
+      "query": "Máy in PR-404 đang mất kết nối. Kiểm tra network của đúng asset này và trạng thái dịch vụ printing production.",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {"name": "inspect_device", "args": {"asset_id": "PR-404", "check": "network"}},
+          {"name": "check_service_status", "args": {"service": "printing", "environment": "production"}}
+        ]
+      },
+      "metadata": {
+        "turn_type": "single",
+        "difficulty": "medium",
+        "what_it_tests": "Phân biệt diagnostic của một printer asset với shared printing service và gọi đủ hai tool."
+      }
+    },
+    {
+      "id": "G04_encryption_kb_only",
+      "phase": "B",
+      "query": "Tìm hướng dẫn nội bộ về quy trình kiểm tra BitLocker hoặc FileVault; tôi chỉ cần bài hướng dẫn, không kiểm tra máy nào.",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {"name": "search_kb", "args": {"category": "security"}}
+        ]
+      },
+      "metadata": {
+        "turn_type": "single",
+        "difficulty": "medium",
+        "what_it_tests": "Route yêu cầu kiến thức disk encryption sang KB security mà không inspect thiết bị."
+      }
+    },
+    {
+      "id": "G05_missing_room_asset",
+      "phase": "B",
+      "query": "Micro của một phòng họp đang mất tiếng nhưng tôi chưa có room ID hay asset ID. Kiểm tra giúp tôi.",
+      "failure_type": "missing_info",
+      "expect": {
+        "tool_calls": [
+          {"name": "clarify", "args": {"response_type": "text"}}
+        ]
+      },
+      "metadata": {
+        "turn_type": "single",
+        "difficulty": "medium",
+        "what_it_tests": "Hỏi asset ID thay vì tự đoán phòng hoặc gọi inspect_device với mô tả chung."
+      }
+    },
+    {
+      "id": "G06_correct_mobile_asset_keep_check",
+      "phase": "B",
+      "turns": [
+        {"role": "user", "content": "Kiểm tra security của laptop LT-411."},
+        {"role": "user", "content": "Tôi nhầm loại thiết bị; mã đúng là MB-012."},
+        {"role": "user", "content": "Giữ nguyên phạm vi security và chỉ kiểm tra mã mới."}
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {"name": "inspect_device", "args": {"asset_id": "MB-012", "check": "security"}}
+        ]
+      },
+      "metadata": {
+        "turn_type": "multi",
+        "difficulty": "medium",
+        "what_it_tests": "Giá trị asset mới nhất thay thế asset cũ trong khi giữ diagnostic check."
+      }
+    },
+    {
+      "id": "G07_switch_from_device_to_privacy_policy",
+      "phase": "B",
+      "turns": [
+        {"role": "user", "content": "Kiểm tra software của máy DT-031."},
+        {"role": "user", "content": "Dừng việc kiểm tra thiết bị."},
+        {"role": "user", "content": "Thay vào đó chỉ tra policy về việc ghi token và mật khẩu vào log hỗ trợ."}
+      ],
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {"name": "policy", "args": {"policy_area": "data_privacy"}}
+        ]
+      },
+      "metadata": {
+        "turn_type": "multi",
+        "difficulty": "medium",
+        "what_it_tests": "Ý định mới nhất chuyển hẳn từ device inspection sang privacy policy và không gọi tool cũ."
+      }
+    },
+    {
+      "id": "G08_ticket_change_invalidates_confirmation",
+      "phase": "B",
+      "turns": [
+        {"role": "user", "content": "Tôi xác nhận ticket medium cho lỗi micro phòng họp RM-501."},
+        {"role": "user", "content": "Khoan, đổi summary thành camera bị mất hình và priority thành high."},
+        {"role": "user", "content": "Hãy cho tôi kiểm tra lại payload mới trước khi thực hiện."}
+      ],
+      "failure_type": "wrong_boundary",
+      "expect": {
+        "tool_calls": [
+          {"name": "clarify", "args": {"response_type": "yes_no"}}
+        ]
+      },
+      "metadata": {
+        "turn_type": "multi",
+        "difficulty": "hard",
+        "what_it_tests": "Thay đổi summary và priority làm xác nhận trước đó hết hiệu lực."
+      }
+    },
+    {
+      "id": "G09_correct_target_then_parallel_printer_triage",
+      "phase": "B",
+      "turns": [
+        {"role": "user", "content": "Wi-Fi trên LT-240 có vẻ không ổn."},
+        {"role": "user", "content": "Xin sửa lại: vấn đề thực tế là máy in PR-404 đang offline."},
+        {"role": "user", "content": "Kiểm tra network của PR-404 và cả printing production, bỏ qua laptop cũ."}
+      ],
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {"name": "inspect_device", "args": {"asset_id": "PR-404", "check": "network"}},
+          {"name": "check_service_status", "args": {"service": "printing", "environment": "production"}}
+        ]
+      },
+      "metadata": {
+        "turn_type": "multi",
+        "difficulty": "hard",
+        "what_it_tests": "Loại bỏ target cũ và thực hiện đầy đủ hai nguồn triage cho target mới."
+      }
+    },
+    {
+      "id": "G10_format_latest_findings_without_refetch",
+      "phase": "B",
+      "turns": [
+        {"role": "user", "content": "Ban đầu tôi định kiểm tra meeting room RM-501."},
+        {"role": "user", "content": "Không cần kiểm tra nữa; findings đã có là camera healthy và microphone pod disconnected."},
+        {"role": "user", "content": "Chỉ format các findings đó thành technical report tên 'RM-501 audio', không lấy lại dữ liệu."}
+      ],
+      "failure_type": "unnecessary_tool",
+      "expect": {
+        "tool_calls": [
+          {"name": "format_incident_report", "args": {"template": "technical", "incident_title": "RM-501 audio"}}
+        ]
+      },
+      "metadata": {
+        "turn_type": "multi",
+        "difficulty": "medium",
+        "what_it_tests": "Format findings mới nhất mà không inspect hoặc refetch dữ liệu đã bị hủy."
+      }
+    }
+  ]
 }

@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Northstar IT Helpdesk</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand-mark" aria-hidden="true">N</div>
+      <div>
+        <p class="eyebrow">Northstar Labs</p>
+        <h1>IT Helpdesk</h1>
+        <p class="subtitle">Agent console cho dữ liệu lab giả lập</p>
+      </div>
+
+      <section class="artifact-card" aria-labelledby="artifact-heading">
+        <div class="section-heading" id="artifact-heading">Runtime</div>
+        <dl>
+          <div><dt>Artifact</dt><dd id="artifact-value">Đang tải…</dd></div>
+          <div><dt>Provider</dt><dd id="provider-value">—</dd></div>
+          <div><dt>Model</dt><dd id="model-value">—</dd></div>
+          <div><dt>Transcript</dt><dd id="transcript-value">—</dd></div>
+        </dl>
+      </section>
+
+      <section class="legend" aria-labelledby="legend-heading">
+        <div class="section-heading" id="legend-heading">Trace hiển thị</div>
+        <p><span class="dot call"></span>Tool name và input</p>
+        <p><span class="dot result"></span>Kết quả hoặc lỗi</p>
+        <p><span class="dot version"></span>Phiên bản artifact</p>
+      </section>
+
+      <button class="secondary-button" id="new-session" type="button">Tạo phiên mới</button>
+      <p class="privacy-note">Không nhập password, OTP, token, recovery code hoặc dữ liệu thật.</p>
+    </aside>
+
+    <main class="workspace">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Live tool-calling session</p>
+          <h2>Support conversation</h2>
+        </div>
+        <div class="status-pill"><span id="status-dot"></span><span id="status-text">Khởi tạo</span></div>
+      </header>
+
+      <section class="messages" id="messages" aria-live="polite">
+        <article class="message assistant-message">
+          <div class="avatar">AI</div>
+          <div class="message-content">
+            <div class="message-meta">Helpdesk agent</div>
+            <p>Chào bạn. Hãy mô tả sự cố IT bằng dữ liệu giả lập. Mọi tool call, input và kết quả sẽ được hiển thị bên dưới câu trả lời.</p>
+          </div>
+        </article>
+      </section>
+
+      <form class="composer" id="chat-form">
+        <label for="message-input">Yêu cầu hỗ trợ</label>
+        <div class="composer-row">
+          <textarea id="message-input" rows="2" maxlength="8000" placeholder="Ví dụ: Kiểm tra riêng VPN trên LT-204…" required></textarea>
+          <button id="send-button" type="submit">Gửi</button>
+        </div>
+        <div class="composer-footer">
+          <span>Enter để xuống dòng · Ctrl+Enter để gửi</span>
+          <span id="char-count">0 / 8000</span>
+        </div>
+      </form>
+    </main>
+  </div>
+  <script src="/app.js" defer></script>
+</body>
+</html>

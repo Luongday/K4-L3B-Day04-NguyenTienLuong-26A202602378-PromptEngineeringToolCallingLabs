@@ -66,7 +66,6 @@ class AnthropicProvider:
             "model": model or self.default_model,
             "messages": chat_messages,
             "max_tokens": 1024,
-            "temperature": temperature,
         }
         if system:
             kwargs["system"] = system
