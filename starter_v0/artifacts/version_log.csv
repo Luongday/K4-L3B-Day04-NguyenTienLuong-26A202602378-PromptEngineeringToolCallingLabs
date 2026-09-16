@@ -1,1 +1,2 @@
 version,author,changed_artifact,artifact_version,prompt_hash,tools_hash,reason,hypothesis,metric_name,metric_before,metric_after,run_file
+v0,NguyenTienLuong,baseline,v0+p27467914bc4d+td4848549884e,27467914bc4d93574eb1a418b77247c51682e04401c78fb4445c22b9019185a0,d4848549884eb9613313a2a8dec5faca4e8299842790ac2d42a04195b4da3198,Ghi nhận kết quả ban đầu trước khi sửa artifact,Đo hành vi và lỗi của starter trước khi cải thiện prompt hoặc tool declaration,case_accuracy,,0.7,runs/v0_B_base_openrouter_20260916T082342530823.json
